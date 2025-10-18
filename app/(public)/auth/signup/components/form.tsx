@@ -15,6 +15,7 @@ import signupAction from '../action'
 export default function SignupForm({ className, action, ...props }: React.ComponentProps<'form'>) {
   const [state, formAction, isPending] = React.useActionState(signupAction, undefined)
 
+  console.log(state)
   return (
     <Card>
       <CardHeader className="text-center">

@@ -7,18 +7,29 @@ import { ActionState } from '@/lib/type'
 import z from 'zod'
 const ERROR_MESSAGE = '입력 정보가 올바르지 않습니다. 다시 확인해주세요.'
 
-const signupSchema = z.object({
-  email: z.email({ error: 'Email is not valid' }),
-  name: z.string().min(1, { error: 'Name is required' }).max(20, { error: 'Name is must less then 20 characters' }),
-  password: z
-    .string()
-    .min(8, { message: '비밀번호는 8자 이상이어야 합니다.' })
-    .regex(/[A-Z]/, { message: '대문자를 포함해야 합니다.' })
-    .regex(/[a-z]/, { message: '소문자를 포함해야 합니다.' })
-    .regex(/[0-9]/, { message: '숫자를 포함해야 합니다.' })
-    .regex(/[!@#$%^&*]/, { message: '특수문자를 포함해야 합니다.' }),
-  confirmPassword: z.string().min(1, { message: '비밀번호 확인은 필수 입력 항목입니다.' }),
-})
+const signupSchema = z
+  .object({
+    email: z.email({ error: 'Email is not valid' }),
+    name: z.string().min(1, { error: 'Name is required' }).max(20, { error: 'Name is must less then 20 characters' }),
+    password: z
+      .string()
+      .min(8, { message: '비밀번호는 8자 이상이어야 합니다.' })
+      .regex(/[A-Z]/, { message: '대문자를 포함해야 합니다.' })
+      .regex(/[a-z]/, { message: '소문자를 포함해야 합니다.' })
+      .regex(/[0-9]/, { message: '숫자를 포함해야 합니다.' })
+      .regex(/[!@#$%^&*]/, { message: '특수문자를 포함해야 합니다.' }),
+    confirmPassword: z.string().min(1, { message: '비밀번호 확인은 필수 입력 항목입니다.' }),
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (password !== confirmPassword) {
+      ctx.addIssue({
+        format: 'json_string',
+        code: 'invalid_format',
+        path: ['confirmPassword'],
+        message: 'Confirm Password is diffrent',
+      })
+    }
+  })
 
 export default async function signupAction(state: ActionState<typeof signupSchema>, formData: FormData) {
   const form = Object.fromEntries(formData)

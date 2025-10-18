@@ -24,10 +24,9 @@ export async function DELETE(request: NextRequest, { params }: ProxyParam) {
 }
 
 const handleProxyRequest = async (request: NextRequest, pathSegments: string[]) => {
-  console.log('Trying Proxy BFF')
-
   const { accessToken, refreshToken } = await readAuthTokenFromCookies()
-  console.log('Found Auth Tokens: ', accessToken, refreshToken)
+
+  console.log('[BFF] AT: ', accessToken, ' RT: ', refreshToken)
 
   const endpoint = `${pathSegments.join('/')}`
   const searchParams = request.nextUrl.searchParams.toString()
@@ -56,7 +55,6 @@ const handleProxyRequest = async (request: NextRequest, pathSegments: string[]) 
       } catch {
         reason = null
       }
-      console.log('Reason: ', reason)
 
       response = await api.post('v1/auth/refresh', { body: JSON.stringify({ refreshToken }) })
 
@@ -78,7 +76,7 @@ const handleProxyRequest = async (request: NextRequest, pathSegments: string[]) 
 
     return response
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return NextResponse.json({ error: 'Proxy request failed' }, { status: 500 })
   }
 }

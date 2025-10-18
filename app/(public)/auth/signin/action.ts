@@ -27,8 +27,13 @@ export default async function signinAction(state: ActionState<typeof schema>, fo
   const { email, password } = parsed.data
 
   const body = JSON.stringify({ email, password })
-  const tokens = await api.post('v1/auth/signin', { body }).json<TokenResponse>()
-  console.log(tokens)
-  await setAuthCookies(tokens)
+  try {
+    const tokens = await api.post('v1/auth/signin', { body }).json<TokenResponse>()
+    await setAuthCookies(tokens)
+  } catch (error) {
+    return {
+      message: ERROR_MESSAGE,
+    }
+  }
   return redirect('/')
 }

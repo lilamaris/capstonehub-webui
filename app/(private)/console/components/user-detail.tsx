@@ -12,7 +12,6 @@ interface User {
 
 export const UserDetail = () => {
   const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
     client.get<User>('v1/user/me').json<User>().then(setUser)
