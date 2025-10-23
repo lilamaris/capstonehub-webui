@@ -1,7 +1,8 @@
-import { timeline, edition, Timeline } from '@/lib/type'
 import z from 'zod'
 import { faculty } from '../faculty/schema'
 import { department } from '../department/schema'
+import { edition } from '../edition/schema'
+import { timeline } from '../timeline/schema'
 
 export const academicUnit = z.object({
   id: z.uuid(),

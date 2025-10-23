@@ -10,21 +10,21 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
-import { createDepartmentSchema, CreateDepartment, Department } from '../schema'
+import { createSchema, CreateDepartment, Department } from '../schema'
 import { useApiMutation } from '@/hooks/useApi'
 import { mutate } from 'swr'
 
-export interface DepartmentFormProps {
+export interface Props {
   defaultValues?: CreateDepartment
   mutator: ReturnType<typeof useApiMutation<CreateDepartment, Department>>
 }
 
-export const CreateForm = ({ ...props }: DepartmentFormProps) => {
+export const CreateForm = ({ ...props }: Props) => {
   const { defaultValues = { name: '' }, mutator } = props
 
   const router = useRouter()
   const form = useForm<CreateDepartment>({
-    resolver: zodResolver(createDepartmentSchema),
+    resolver: zodResolver(createSchema),
     defaultValues,
   })
 
