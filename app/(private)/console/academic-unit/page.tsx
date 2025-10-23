@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import GlobalTimeline from '@/features/academicUnit/components/GlobalTimelineLayout'
 import { ManagedAcademicUnitSummary } from '@/features/academicUnit/components/summary'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
@@ -15,6 +16,7 @@ export default function Page() {
           <Plus />
         </Button>
       </Link>
+      <GlobalTimeline />
     </div>
   )
 }
